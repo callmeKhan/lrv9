@@ -1,0 +1,30 @@
+#pipelines:
+#  default:
+#    - step:
+#        image: vuphuong87/php8.1-fpm-dev:latest
+#        name: Test on PHP 8.1
+#        caches:
+#          - composer
+#        script:
+#          # install dependencies
+#          - composer install --prefer-dist --no-scripts --no-progress --no-interaction || true
+#          # override test variable
+#          - echo "DATABASE_URL=mysql://username:password@127.0.0.1:3306/db?serverVersion=8.0" > .env.test.local
+#          # initialize testing database
+#          - composer custom:database:init:testing
+#          # run tests
+#          - ./bin/phpunit
+#          # test valid down migrations
+#          - php bin/console doctrine:migration:migrate 'DoctrineMigrations\Version20210507300000' --no-interaction --env=test
+#        services:
+#          - mysql
+#
+#definitions:
+#  services:
+#    mysql:
+#      image: mysql:8.0
+#      variables:
+##        MYSQL_ROOT_PASSWORD: 'root'
+##        MYSQL_DATABASE: 'db'
+##        MYSQL_USER: 'username'
+##        MYSQL_PASSWORD: 'password'
